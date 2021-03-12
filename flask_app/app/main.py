@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, Blueprint
+from flask import render_template, request, Blueprint, jsonify
 from flask_googlemaps import Map
 
 
@@ -18,6 +18,15 @@ def index():
     )
 
     return render_template('index.html', gmap=gmap)
+
+
+@main.route('/info', methods=['POST'])
+def get_info():
+    req = request.get_json(force=True)
+
+    print(req)
+
+    return jsonify({'resp': 'asd'})
 
 
 if __name__ == '__main__':

@@ -7,11 +7,38 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {{ gmap.js }}
 </head>
 <body>
     <div class="container">
         {{ gmap.html }}
     </div>
+    <script>
+        function postInfo(lat, lng) {
+            $.ajax({
+                type: "POST",
+                url: 'info',
+                contentType: "application/json; charset=UTF-8",
+                dataType: 'json',
+                data: JSON.stringify({'latitude': lat, 'longitude': lng}),
+                success: function (data) {
+                    console.log(data);
+                },
+            });
+        }
+
+        $(document).ready(function () {
+            setTimeout(function() {
+                gmap.addListener(
+                    'click',
+                    (event) => {
+                        {#console.log(event.latLng.lat(), event.latLng.lng());#}
+                        postInfo(event.latLng.lat(), event.latLng.lng());
+                    }
+                );
+            }, 10);
+        });
+    </script>
 </body>
 </html>
