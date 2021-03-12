@@ -1,0 +1,9 @@
+.container {
+    height: 86vh;
+}
+
+@media (min-width: 1400px) {
+    .container {
+        width: 90%;
+    }
+}
