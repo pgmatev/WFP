@@ -9,21 +9,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {{ gmap.js }}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/hexagon.js') }}"></script>
 </head>
 <body>
     <div class="container">
         {{ gmap.html }}
     </div>
     <script>
-        function postInfo(lat, lng) {
+        let fire_coef = null; 
+        function postInfo(latLng) {
             $.ajax({
                 type: "POST",
                 url: 'info',
                 contentType: "application/json; charset=UTF-8",
                 dataType: 'json',
-                data: JSON.stringify({'latitude': lat, 'longitude': lng}),
+                data: JSON.stringify({'latitude': latLng.lat(), 'longitude': latLng.lng()}),
                 success: function (data) {
                     console.log(data);
+                    fire_coef = data.fire_coef;
+                    let r = 10000;
+                    let br = r * Math.sqrt(3);
+                    drawHexagon(gmap, latLng, r, fire_coef);
+                    if(fire_coef > 0.5){
+                        drawOuterHexagon(gmap, latLng, br);
+                    }
                 },
             });
         }
@@ -33,8 +42,7 @@
                 gmap.addListener(
                     'click',
                     (event) => {
-                        {#console.log(event.latLng.lat(), event.latLng.lng());#}
-                        postInfo(event.latLng.lat(), event.latLng.lng());
+                        postInfo(event.latLng);
                     }
                 );
             }, 10);
