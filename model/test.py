@@ -1,6 +1,7 @@
 import pandas as pd
 import keras
 from sklearn.pipeline import Pipeline
+from transform import FullPipeline
 from tensorflow.keras.models import load_model
 
 model = load_model("model.hdf5")
@@ -23,8 +24,8 @@ observations = {
         }
 
 df = pd.DataFrame([observations], columns=observations.keys())    
-pipeline = Pipeline()
-data_prepared = pipeline.prepare_data(df)
+pipeline = FullPipeline()
+data_prepared = pipeline.transfrom(df)
 
 prediction = {'area': model.predict(data_prepared)[0]}
 
