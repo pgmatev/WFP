@@ -27,15 +27,40 @@ function drawHexagon(map, position, radius, fire_coef){
     polygon.setMap(map);
 }
 
-function drawOuterHexagon(map,position,radius){
-    let br = radius / Math.sqrt(3)
-    for (var i = 0; i < 3; i++) {
+async function drawOuterHexagon(map, position, radius){
+    let danger = 0;
+    function postInfo(latLng) {
+        return $.ajax({
+            type: "POST",
+            url: 'info',
+            contentType: "application/json; charset=UTF-8",
+            dataType: 'json',
+            data: JSON.stringify({'latitude': latLng.lat(), 'longitude': latLng.lng()}),
+            success: function (data) {
+                console.log(data);
+                fire_coef = data.fire_coef1;
+                if(fire_coef > 0.5){
+                    danger++;
+                }
+            },
+        });
+    }
+    let br = radius / Math.sqrt(3);
+    var i = 0;
+
+    while (true) {
         position = google.maps.geometry.spherical.computeOffset(position, radius, 0);
         for (var j = 1; j <= 6; j++) {
             for (var k = 1; k <= i+1; k++) {
-                drawHexagon(gmap, position, br);
+                await postInfo(position);
+                drawHexagon(gmap, position, br, fire_coef);
                 position = google.maps.geometry.spherical.computeOffset(position, radius, -60+(-60*j));
             }
         }
+        i++;
+        if(danger === 0){
+            break;
+        }
+        danger = 0;
     }
 }

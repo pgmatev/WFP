@@ -19,7 +19,6 @@
         let fire_coef = null; 
         function postInfo(latLng) {
             $.ajax({
-
                 type: "POST",
                 url: 'info',
                 contentType: "application/json; charset=UTF-8",
@@ -29,9 +28,11 @@
                     console.log(data);
                     fire_coef = data.fire_coef;
                     let r = 10000;
-                        let br = r * Math.sqrt(3);
-                        drawHexagon(gmap, latLng, r, fire_coef);
-                        // drawOuterHexagon(gmap, event.latLng, br);
+                    let br = r * Math.sqrt(3);
+                    drawHexagon(gmap, latLng, r, fire_coef);
+                    if(fire_coef > 0.5){
+                        drawOuterHexagon(gmap, latLng, br);
+                    }
                 },
             });
         }
@@ -41,8 +42,7 @@
                 gmap.addListener(
                     'click',
                     (event) => {
-                            postInfo(event.latLng);
-                        
+                        postInfo(event.latLng);
                     }
                 );
             }, 10);

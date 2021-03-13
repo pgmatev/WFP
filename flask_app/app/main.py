@@ -32,9 +32,10 @@ def get_info():
     weather_info = get_weather_info(latitude, longitude)
 
     # fire_coef = algorithm(weather_info)
-    fire_coef = 0.76
+    fire_coef = 0.57
+    fire_coef1 = 0.1
 
-    return jsonify({'fire_coef': fire_coef})
+    return jsonify({'fire_coef': fire_coef, 'fire_coef1': fire_coef1})
 
 
 def get_weather_info(lat, lng):
