@@ -36,7 +36,10 @@
                     (event) => {
                         console.log(event.latLng.lat(), event.latLng.lng());
                         postInfo(event.latLng.lat(), event.latLng.lng());
-                        drawHexagon(gmap, event.latLng, 50)
+                        let r = 100;
+                        let br = r * Math.sqrt(3)
+                        drawHexagon(gmap, event.latLng, r)
+                        drawHexagon1(gmap, event.latLng, br)
                     }
                 );
             }, 10);

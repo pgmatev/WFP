@@ -19,3 +19,25 @@ function drawHexagon(map,position,radius){
     polygon.setMap(map);
     // map.setCenter(position);
 }
+
+function drawHexagon1(map,position,radius){
+    var coordinates = [];
+    for(var angle= -60;angle < 300; angle+=60) {
+        let cor = google.maps.geometry.spherical.computeOffset(position, radius, angle)
+        coordinates.push(cor);
+        let br = radius / Math.sqrt(3)
+        drawHexagon(gmap, cor, br)
+    }
+
+    // console.log(coordinates);
+
+    // Construct the polygon.
+    var polygon = new google.maps.Polygon({
+        paths: coordinates,
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35
+    });
+}
