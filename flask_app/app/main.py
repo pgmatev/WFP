@@ -29,9 +29,12 @@ def get_info():
     latitude = req.get('latitude')
     longitude = req.get('longitude')
 
-    get_weather_info(latitude, longitude)
+    weather_info = get_weather_info(latitude, longitude)
 
-    return jsonify({'resp': 'asd'})
+    # fire_coef = algorithm(weather_info)
+    fire_coef = 0.76
+
+    return jsonify({'fire_coef': fire_coef})
 
 
 def get_weather_info(lat, lng):

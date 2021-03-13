@@ -16,15 +16,22 @@
         {{ gmap.html }}
     </div>
     <script>
-        function postInfo(lat, lng) {
+        let fire_coef = null; 
+        function postInfo(latLng) {
             $.ajax({
+
                 type: "POST",
                 url: 'info',
                 contentType: "application/json; charset=UTF-8",
                 dataType: 'json',
-                data: JSON.stringify({'latitude': lat, 'longitude': lng}),
+                data: JSON.stringify({'latitude': latLng.lat(), 'longitude': latLng.lng()}),
                 success: function (data) {
                     console.log(data);
+                    fire_coef = data.fire_coef;
+                    let r = 10000;
+                        let br = r * Math.sqrt(3);
+                        drawHexagon(gmap, latLng, r, fire_coef);
+                        // drawOuterHexagon(gmap, event.latLng, br);
                 },
             });
         }
@@ -34,11 +41,8 @@
                 gmap.addListener(
                     'click',
                     (event) => {
-                        postInfo(event.latLng.lat(), event.latLng.lng());
-                        let r = 10000;
-                        let br = r * Math.sqrt(3);
-                        drawHexagon(gmap, event.latLng, r);
-                        drawHexagon1(gmap, event.latLng, br);
+                            postInfo(event.latLng);
+                        
                     }
                 );
             }, 10);
