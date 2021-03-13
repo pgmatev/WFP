@@ -38,7 +38,7 @@ async function drawOuterHexagon(map, position, radius){
             data: JSON.stringify({'latitude': latLng.lat(), 'longitude': latLng.lng()}),
             success: function (data) {
                 console.log(data);
-                fire_coef = data.fire_coef1;
+                fire_coef = data.fire_coef;
                 if(fire_coef > 0.5){
                     danger++;
                 }
