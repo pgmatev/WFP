@@ -4,6 +4,8 @@ import requests
 import json
 from flask import render_template, request, Blueprint, jsonify
 from flask_googlemaps import Map
+import pickle
+import numpy as np
 
 main = Blueprint('main', __name__)
 
@@ -31,10 +33,14 @@ def get_info():
     longitude = req.get('longitude')
 
     weather_info = get_weather_info(latitude, longitude)
+    modelCoef = pickle.load(open('../model/models/model-coef.pkl','rb'))
 
+    final=[np.array(weather_info)]
     # fire_coef = algorithm(weather_info)
-
-    return jsonify({'fire_coef': fire_coef})
+    prediction=modelCoef.predict_proba(final)
+    output = '{0:.{1}f}'.format(prediction[0][1], 2)
+    print(output)
+    return jsonify({'fire_coef': output})
 
 
 def get_weather_info(lat, lng):
