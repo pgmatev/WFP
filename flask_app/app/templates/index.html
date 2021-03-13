@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     {{ gmap.js }}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/hexagon.js') }}"></script>
 </head>
 <body>
     <div class="container">
@@ -33,8 +34,9 @@
                 gmap.addListener(
                     'click',
                     (event) => {
-                        {#console.log(event.latLng.lat(), event.latLng.lng());#}
+                        console.log(event.latLng.lat(), event.latLng.lng());
                         postInfo(event.latLng.lat(), event.latLng.lng());
+                        drawHexagon(gmap, event.latLng, 50)
                     }
                 );
             }, 10);
