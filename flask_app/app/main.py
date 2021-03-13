@@ -49,7 +49,7 @@ def get_weather_info(lat, lng):
     weather_info = requests.get(weather_api_url)
     weather_json = json.loads(weather_info.text).get('data')[0]
 
-    data = [weather_json.get('temp'), 21, weather_json.get('rh')]
+    data = [weather_json.get('temp') + 20, 41, weather_json.get('rh') - 20]
     return data
 
 

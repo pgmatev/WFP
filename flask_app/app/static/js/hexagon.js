@@ -11,7 +11,7 @@ function drawHexagon(map, position, radius, fire_coef){
     if(fire_coef > 0.5 && fire_coef < 0.75){
         color = '#FFFF00'
     }
-    if(fire_coef > 0.75){
+    if(fire_coef >= 0.75){
         color = '#FF0000'
     }
     console.log(color);
