@@ -1,7 +1,7 @@
 import pandas as pd
 import keras
 from sklearn.pipeline import Pipeline
-from transform import FullPipeline
+from transform import FullPipeline, AttributeSelector, CustomBinarizer
 from tensorflow.keras.models import load_model
 
 model = load_model("model.hdf5")
@@ -25,8 +25,8 @@ observations = {
 
 df = pd.DataFrame([observations], columns=observations.keys())    
 pipeline = FullPipeline()
-data_prepared = pipeline.transfrom(df)
+data_prepared = pipeline.prepare_data(df)
+print(data_prepared[0][: len(data_prepared) - 2])
 
-prediction = {'area': model.predict(data_prepared)[0]}
-
+prediction = {'area': model.predict(data_prepared[0][: len(data_prepared) - 2])[0]}
 print(prediction)

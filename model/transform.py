@@ -27,3 +27,8 @@ class FullPipeline():
 
     def prepare_data(self, data):
         return self.pipeline.transform(data)
+
+
+if __name__ == "__main__":
+    AttributeSelector.__module__ = "transform"
+    
