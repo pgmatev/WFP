@@ -1,11 +1,9 @@
 //ur mum gone
 function drawHexagon(map, position, radius, fire_coef){
-    var coordinates = [];
-    for(var angle= -90;angle < 270; angle+=60) {
+    let coordinates = [];
+    for(let angle= -90;angle < 270; angle+=60) {
        coordinates.push(google.maps.geometry.spherical.computeOffset(position, radius, angle));
     }
-
-    console.log(coordinates);
 
     let color = '#00FF00'
     if(fire_coef > 0.5 && fire_coef < 0.75){
@@ -14,9 +12,8 @@ function drawHexagon(map, position, radius, fire_coef){
     if(fire_coef >= 0.75){
         color = '#FF0000'
     }
-    console.log(color);
     // Construct the polygon.
-    var polygon = new google.maps.Polygon({
+    let polygon = new google.maps.Polygon({
         paths: coordinates,
         strokeColor: color,
         strokeOpacity: 0.8,
@@ -46,7 +43,7 @@ async function drawOuterHexagon(map, position, radius){
         });
     }
     let br = radius / Math.sqrt(3);
-    var i = 0;
+    let i = 0;
 
     while (true) {
         position = google.maps.geometry.spherical.computeOffset(position, radius, 0);

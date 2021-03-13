@@ -17,7 +17,7 @@ def index():
         varname="gmap",
         lat=42.698334,
         lng=23.319941,
-        zoom=14,
+        zoom=5,
         region="BG",
         style="height:100%;width:100%;margin:0;",
     )
@@ -32,24 +32,46 @@ def get_info():
     latitude = req.get('latitude')
     longitude = req.get('longitude')
 
-    weather_info = get_weather_info(latitude, longitude)
-    modelCoef = pickle.load(open('../model/models/model-coef.pkl','rb'))
+    weather_info = get_weather_info1(latitude, longitude)
 
-    final=[np.array(weather_info)]
-    # fire_coef = algorithm(weather_info)
-    prediction=modelCoef.predict_proba(final)
+    model_coef = pickle.load(open('../model/models/model-coef.pkl', 'rb'))
+
+    final = [np.array(weather_info)]
+    prediction = model_coef.predict_proba(final)
     output = '{0:.{1}f}'.format(prediction[0][1], 2)
-    print(output)
-    return jsonify({'fire_coef': output})
+
+    area = 36.9
+    direction = 'NE'
+    return jsonify({'fire_coef': output, 'area': area, 'direction': direction})
 
 
-def get_weather_info(lat, lng):
+def api_call(lat, lng):
     api_key = environ.get('WEATHER_API_KEY')
     weather_api_url = f'https://api.weatherbit.io/v2.0/current?lat={lat}&lon={lng}&key={api_key}'
     weather_info = requests.get(weather_api_url)
     weather_json = json.loads(weather_info.text).get('data')[0]
 
-    data = [weather_json.get('temp') + 20, 41, weather_json.get('rh') - 20]
+    return  weather_json
+
+
+def get_weather_info1(lat, lng):
+    weather_json = api_call(lat, lng)
+    data = [weather_json.get('temp'), 41, weather_json.get('rh')]
+
+    return data
+
+
+def get_weather_info2(lat, lng):
+    weather_json = api_call(lat, lng)
+    data = {
+        'temp': weather_json.get('temp'),
+        'RH': weather_json.get('rh'),
+        'wind': weather_json.get('wind_spd') * 3.6,
+        'rain': weather_json.get('precip'),
+        'month': 'mar',
+        'day': 'sun',
+    }
+
     return data
 
 
