@@ -6,7 +6,7 @@ from keras.utils import np_utils
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-dataset = pd.read_csv('forestfires.csv')
+dataset = pd.read_csv('models/forestfires.csv')
 
 X = dataset.iloc[:, 0:12].values
 y = dataset.iloc[:, 12].values

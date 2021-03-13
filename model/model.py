@@ -23,4 +23,4 @@ model = create_model()
 model.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 model.fit(X_train, y_train, batch_size = 5, epochs = 500)
 
-model.save('model.hdf5')
+model.save('./models/model-area.hdf5')

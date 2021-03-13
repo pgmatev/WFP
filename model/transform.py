@@ -23,7 +23,7 @@ class CustomBinarizer(BaseEstimator, TransformerMixin):
 
 class FullPipeline():
     def __init__(self):
-        self.pipeline = joblib.load('./pipeline.pkl')
+        self.pipeline = joblib.load('./models/pipeline.pkl')
 
     def prepare_data(self, data):
         return self.pipeline.transform(data)

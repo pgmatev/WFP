@@ -1,10 +1,14 @@
+from numpy.core.records import array
 import pandas as pd
+import numpy as np
+import pickle
 import keras
 from sklearn.pipeline import Pipeline
 from transform import FullPipeline, AttributeSelector, CustomBinarizer
 from tensorflow.keras.models import load_model
 
-model = load_model("model.hdf5")
+modelArea = load_model("models/model-area.hdf5")
+modelCoef = pickle.load(open('./models/model-coef.pkl','rb'))
 
 
 #3,4,sep,sun,89.6,84.1,714.3,5.7,23.8,35,3.6,0,5.18
@@ -23,10 +27,23 @@ observations = {
             "rain": 0
         }
 
-df = pd.DataFrame([observations], columns=observations.keys())    
+df = pd.DataFrame([observations], columns=observations.keys())
 pipeline = FullPipeline()
 data_prepared = pipeline.prepare_data(df)
-print(data_prepared[0][: len(data_prepared) - 2])
 
-prediction = {'area': model.predict(data_prepared[0][: len(data_prepared) - 2])[0]}
-print(prediction)
+test = data_prepared.tolist()
+
+test[0].pop()
+test[0].pop()
+test = np.array(test)
+
+#prediction = {'area': model.predict(test)[0]}
+print(modelArea.predict(test)[0])
+
+#temp, oxygen, humidity
+coef = [36, 21, 10]
+final=[np.array(coef)]
+
+prediction=modelCoef.predict_proba(final)
+output='{0:.{1}f}'.format(prediction[0][1], 2)
+print(output)
