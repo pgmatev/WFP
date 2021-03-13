@@ -34,12 +34,11 @@
                 gmap.addListener(
                     'click',
                     (event) => {
-                        console.log(event.latLng.lat(), event.latLng.lng());
                         postInfo(event.latLng.lat(), event.latLng.lng());
-                        let r = 100;
-                        let br = r * Math.sqrt(3)
-                        drawHexagon(gmap, event.latLng, r)
-                        drawHexagon1(gmap, event.latLng, br)
+                        let r = 10000;
+                        let br = r * Math.sqrt(3);
+                        drawHexagon(gmap, event.latLng, r);
+                        drawHexagon1(gmap, event.latLng, br);
                     }
                 );
             }, 10);
