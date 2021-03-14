@@ -20,6 +20,7 @@
     <div class="container">
         {{ gmap.html }}
     </div>
+    <div id="main"></div>
     <script>
         let fire_coef = null; 
         function postInfo(latLng) {
@@ -30,12 +31,15 @@
                 dataType: 'json',
                 data: JSON.stringify({'latitude': latLng.lat(), 'longitude': latLng.lng()}),
                 success: function (data) {
+                    var div = $("#main");
+                    div.empty();
                     fire_coef = data.fire_coef;
-                    area = data.area;
+                    temp = data.temp;
+                    humidity = data.humidity;
                     direction = data.direction;
-                    alert(area + direction);
                     let r = 10000;
                     let br = r * Math.sqrt(3);
+                    div.append(`<h2>The temperature is: ${temp}, humidity is: ${humidity}, the direction: ${direction}</h2>`)
                     drawHexagon(gmap, latLng, r, fire_coef);
                     if(fire_coef > 0.5){
                         drawOuterHexagon(gmap, latLng, br);

@@ -36,13 +36,17 @@ def get_info():
 
     model_coef = pickle.load(open('../model/models/model-coef.pkl', 'rb'))
 
+    temperature = weather_info[0]
+    direction = weather_info[3]
+    humidity = weather_info[2]
+    oxygen = weather_info[1]
+    weather_info.pop(3)
     final = [np.array(weather_info)]
     prediction = model_coef.predict_proba(final)
     output = '{0:.{1}f}'.format(prediction[0][1], 2)
 
-    area = 36.9
-    direction = 'NE'
-    return jsonify({'fire_coef': output, 'area': area, 'direction': direction})
+    
+    return jsonify({'fire_coef': output, 'temp': temperature, 'humidity': humidity, 'direction': direction})
 
 
 def api_call(lat, lng):
@@ -56,7 +60,7 @@ def api_call(lat, lng):
 
 def get_weather_info1(lat, lng):
     weather_json = api_call(lat, lng)
-    data = [weather_json.get('temp'), 41, weather_json.get('rh')]
+    data = [weather_json.get('temp'), 41, weather_json.get('rh'), weather_json.get('wind_cdir')]
 
     return data
 

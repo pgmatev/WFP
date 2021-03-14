@@ -6,3 +6,7 @@
 .navbar {
     justify-content: center !important;
 }
+
+#main {
+    text-align: center;
+}
